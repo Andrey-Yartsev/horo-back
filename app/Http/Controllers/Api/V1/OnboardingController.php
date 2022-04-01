@@ -21,8 +21,15 @@ use Exception;
 
 class OnboardingController extends Controller
 {
+    public function testSession(OnboardingApplyNameRequest $request)
+    {
+        //$request->session()->put('key', 'asd');
+        //return $request->session()->get('key');
+    }
+
     public function applyName(OnboardingApplyNameRequest $request)
     {
+        return $request->session()->getId();
         $input = $request->validated();
 
         if ($user = auth()->user()) {
@@ -50,7 +57,6 @@ class OnboardingController extends Controller
             $user->save();
         } else {
             session()->put('onboarding.gender', $input['gender']);
-
             if (session()->get('onboarding.step') === User::ONBOARDING_GENDER) {
                 session()->put('onboarding.step', User::ONBOARDING_BIRTH_DATE);
             }

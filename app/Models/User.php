@@ -279,8 +279,8 @@ class User extends Authenticatable implements HasMedia
 
     public function getBasicDataForAstrologyApi()
     {
-        if (!$this->birth_date || !$this->birth_place) {
-            return null;
+        if (!$this->birth_date) {
+            throw new \Exception('User has no birth_date');
         }
 
         return [

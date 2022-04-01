@@ -21,6 +21,7 @@ class PageController extends Controller
 {
     public function today(Request $request)
     {
+        // сделать Postman API для незалогиненого
         $basicDataForAstrologyApi = auth()->user()->getBasicDataForAstrologyApi();
 
         AstrologyApi::start();
@@ -29,7 +30,6 @@ class PageController extends Controller
         AstrologyApi::tropicalTransitsDaily($basicDataForAstrologyApi);
         AstrologyApi::natalTransitsDaily($basicDataForAstrologyApi);
         $data = AstrologyApi::end();
-
         $horoscope = new WesternHoroscope($data[0]);
 
         $planets = array_map(function ($data) {
@@ -217,7 +217,6 @@ class PageController extends Controller
         ]);
 
         $sunPlanet = Planet::where('name', 'Sun')->first();
-        print_r($sunPlanet) ;die('xxx');
         $basicDataForAstrologyApi = auth()->user()->getBasicDataForAstrologyApi();
         $data = AstrologyApi::generalSignReportTropical($sunPlanet->name, $basicDataForAstrologyApi);
         $sunPlanet->sign = $data['sign_name'];

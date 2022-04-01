@@ -40,7 +40,8 @@ class Kernel extends HttpKernel
         ],
 
         'api' => [
-            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            //\Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Illuminate\Session\Middleware\StartSession::class,
             'throttle:api',
             \App\Http\Middleware\SwitchGuardToSanctum::class,
             \App\Http\Middleware\SetLocale::class,

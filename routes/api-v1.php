@@ -25,6 +25,7 @@ Route::prefix('stripe')->group(function () {
 // Route::post('subscribe', 'Stripe\CheckoutSessionController@create')->middleware('auth');
 
 Route::prefix('onboarding')->group(function () {
+    Route::get('test', 'TestSessionController@testSession');
     Route::post('name', 'OnboardingController@applyName');
     Route::post('gender', 'OnboardingController@applyGender');
     Route::post('birth_date', 'OnboardingController@applyBirthDate');
@@ -58,8 +59,8 @@ Route::get('planets/{planet_slug}', 'PlanetController@get');
 Route::get('compatibility/{sign0_code}/{sign1_code}', 'CompatibilityController@index');
 
 Route::prefix('pages')->group(function () {
-    Route::get('today', 'PageController@today');
-    Route::get('you/basic', 'PageController@youBasic');
-    Route::get('you/planets', 'PageController@youPlanets');
-    Route::get('you/houses', 'PageController@youHouses');
+    Route::get('today', 'PageController@today')->middleware('auth');;
+    Route::get('you/basic', 'PageController@youBasic')->middleware('auth');;
+    Route::get('you/planets', 'PageController@youPlanets')->middleware('auth');;
+    Route::get('you/houses', 'PageController@youHouses')->middleware('auth');;
 });

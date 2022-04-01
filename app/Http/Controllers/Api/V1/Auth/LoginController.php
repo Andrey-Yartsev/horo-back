@@ -71,15 +71,9 @@ class LoginController extends Controller
         $this->input = $request->validate(array_merge([
             'user' => 'required|array',
             'user.email' => 'required|string|exists:users,email',
-        ], $this->user && $this->user->has_password ? [
             'user.password' => 'required|string',
-        ] : [], [
             'remember_me' => 'boolean',
-        ], auth()->guard() instanceof SessionGuard ? [] : [
-            'application_name' => 'required|string',
-        ]), [
-            // 'user.password.required' => ':)',
-        ]);
+        ]));
     }
 
     /**
@@ -127,7 +121,7 @@ class LoginController extends Controller
             return auth()->toResource();
         }
 
-        $token = auth()->user()->createToken($this->input['application_name']);
+        $token = auth()->user()->createToken($this->input['user']['email']);
 
         return auth('web')->toResource(['token' => $token->plainTextToken]);
     }

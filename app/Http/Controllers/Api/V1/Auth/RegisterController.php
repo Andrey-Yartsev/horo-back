@@ -46,16 +46,14 @@ class RegisterController extends Controller
             }
         }
 
-        $input = $request->validate(array_merge([
+        $input = $request->validate([
             'user' => 'required|array',
             'user.email' => 'required|email|unique:users,email,' . ($user->id ?? 0),
-            'user.password' => 'string|min:8|nullable',
+            'user.password' => 'required|string|min:8|nullable',
             'user.locale' => 'string|in:' . implode(',', config('app.allowed_locales')),
             'user.utc_offset' => 'required|integer',
             'remember_me' => 'boolean',
-        ], auth()->guard() instanceof SessionGuard ? [] : [
-            'application_name' => 'required|string',
-        ]));
+        ]);
 
         if ($user) {
             $user->fill($input['user']);
@@ -79,7 +77,7 @@ class RegisterController extends Controller
         }
 
         auth()->setUser($user);
-        $token = auth()->user()->createToken($input['application_name']);
+        $token = auth()->user()->createToken($input['user']['email']);
 
         return auth('web')->toResource(['token' => $token->plainTextToken]);
     }
